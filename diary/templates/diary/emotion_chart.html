@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">감정 통계</h2>
+    <div style="background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <canvas id="emotionChart" height="100"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = JSON.parse('{{ emotion_labels|escapejs }}');
+    const counts = JSON.parse('{{ emotion_counts|escapejs }}');
+
+    const ctx = document.getElementById('emotionChart').getContext('2d');
+    const emotionChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '감정 개수',
+                data: counts,
+                backgroundColor: [
+                    '#4CAF50', '#2196F3', '#FFC107', '#FF5722', '#9C27B0'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            onClick: (e, elements) => {
+                if (elements.length > 0) {
+                    const clickedIndex = elements[0].index;
+                    const emotion = labels[clickedIndex];
+                    window.location.href = `/?emotion=${encodeURIComponent(emotion)}`;
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

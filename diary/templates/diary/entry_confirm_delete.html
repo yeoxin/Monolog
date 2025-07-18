@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4" style="background-color: #fffdf5; border: 1px solid #e0d6c3; border-radius: 12px;">
+        <h3 class="mb-4 text-center" style="color: #5e4b3c;">정말로 이 일기를 삭제하시겠어요?</h3>
+
+        <div class="mb-3">
+            <strong style="color: #4e342e;">제목:</strong> {{ entry.title }}
+        </div>
+        <div class="mb-3">
+            <strong style="color: #4e342e;">내용:</strong>
+            <p style="white-space: pre-wrap; color: #6d5844;">{{ entry.content }}</p>
+        </div>
+
+        <form method="POST" class="text-center mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger me-2">삭제</button>
+            <a href="{% url 'entry_detail' entry.pk %}" class="btn btn-secondary">취소</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
